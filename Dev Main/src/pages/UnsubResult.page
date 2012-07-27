@@ -1,0 +1,59 @@
+<apex:page title="Unsubscribe Result" showheader="false" controller="UnSubCon">
+<apex:stylesheet value="http://www.hopefoundation.org/begin/styles.css"/>
+<link rel="shortcut icon" href="http://www.hopefoundation.org/begin/images/favicon.ico" />
+
+<div id="header">
+<div id="headercontent">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr><td align="right" style="font-size:10px; color:#FFF;">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+				<td width="18%" align="left"><a href="http://www.hopefoundation.org/begin"><img src="http://www.hopefoundation.org/begin/images/logo.png" alt="" width="164" height="88" border="0" /></a>
+				</td>
+				<td width="82%" align="right" valign="top">
+					<div class="search"><br />
+						<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:4px;">
+							<tr><td width="96%" align="right" valign="top">&nbsp;</td>
+							<td width="4%" align="right" valign="top">&nbsp;
+							</td></tr>
+						</table>
+						&nbsp;
+					</div>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td align="right"><div><img src="http://www.hopefoundation.org/begin/images/pdforeducators_title.png" alt="" width="414" height="38" /></div></td>
+						</tr>
+		
+					</table>
+				</td></tr>
+			</table>
+		</td></tr>
+	</table>
+</div>
+</div>
+
+<apex:form >
+<div id="container">
+	<div id="content">
+		<table width="920" border="0" cellpadding="0" cellspacing="0" style="margin:auto;">
+			<tr><td width="201" valign="top" id="leftpanel"><p></p></td>
+			<td width="719" valign="top" id="midpanel">
+				<div id="midcontent" style="min-height: 400px;">
+					<h1>Receipt Confirmed.</h1>
+					<p>Your unsubscribe request has been received, and will be processed as soon as possible. 
+					However, please allow up to two weeks for us to fully remove your email address from our system. Thank you.</p>
+				</div> 
+			</td></tr>
+		</table>		
+	</div>
+</div>
+
+</apex:form>
+
+<div id="footer" align="center">
+	&copy;The HOPE Foundation 2010 | 1-<strong>(800) 627-0232</strong> | <a href="http://www.hopefoundation.org/begin/contact-us.html">Contact Us</a>
+</div>
+<div id="footer2" align="center"><img src="http://www.hopefoundation.org/begin/images/footer.png" width="950" height="34" />
+	<br />
+</div>
+</apex:page>

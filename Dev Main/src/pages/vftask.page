@@ -1,0 +1,12 @@
+<apex:page standardcontroller="Task" action="{!if($Profile.Name != 'System Administrator',URLFOR($Action.Task.View, $CurrentPage.Parameters.id,[retURL='/007'],true),null)}">
+<!--action="{!if(true,view,null)}">-->
+<apex:pagemessage summary="You are not allowed to Delete Tasks and Call Logs"
+            severity="Warning"
+            strength="3"/>
+            {!$Profile.Name}!
+<apex:pageblock >
+<apex:pageblocksection >
+	<!--<apex:outputfield value="{!task.Subject}" rendered="{!if(task.Subject == 'test1',true,false)}"/>
+--></apex:pageblocksection>
+</apex:pageblock>
+</apex:page>

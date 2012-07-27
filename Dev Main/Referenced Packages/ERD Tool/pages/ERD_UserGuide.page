@@ -1,0 +1,34 @@
+<apex:page >
+	<apex:pageBlock title="ERD Tool: User Guide" >
+		<div style="max-width:500px;">
+			<h3 style="margin-left:20px;">Enable Standard Objects for ERD Tool</h3> 
+			<ol>
+	  			<li>First click on ERD Tool Objects tab.</li>
+			
+				<br/><b>Note:</b>
+				On this screen it provides two lists, one with the available standard objects, 
+				and one with the enabled standard objects that will show up on the ERD Tool.<br/><br/> 
+			
+	  			<li>Next select/multi-select available standard objects to enable on the ERD Tool.</li>
+	  			<li>Click the add button to enable these selected objects.</li>
+	  			<li>Click save button to finish.</li>
+			
+				<br/><b>Note:</b> 
+				It is the similar process to remove enabled objects by selecting them and 
+				clicking the remove button and saving.<br/><br/>
+			</ol>
+			
+			<h3 style="margin-left:20px;">Use ERD Tool</h3> 
+			<ol>
+	  			<li>Click on ERD Tool tab to start using the application.</li>
+	  		</ol>
+			<h3 style="margin-left:20px;">ERD Functionality Diagram</h3>
+
+		</div>
+		<br/>
+		<center>
+			<apex:image id="FunctinalityDiagram" value="{!URLFOR($Resource.ERD__ERD_Resources,'images/Functionality_Diagram.png')}" />
+		</center>
+		
+	</apex:pageBlock>
+</apex:page>

@@ -1,0 +1,119 @@
+<apex:page controller="mj_orgchart.Mindjet_ControlPanel_Controller" action="{!onload}" >
+<!-- 
+// Copyright 1994-2009 Mindjet LLC, San Francisco, CA USA. All rights reserved.
+//
+// This software is furnished under a license  and may be  used and  copied
+// only in  accordance of the  terms of such license and with the inclusion
+// of the above copyright note.   This software or any other copies thereof
+// may not be provided or otherwise made available to any other person.  No
+// title to and ownership of the software is hereby transferred.
+//
+// The information in this software is subject to change without notice and
+// should not be construed as a commitment by Mindjet LLC.
+//
+ -->
+	<style>
+	.lookupInput{ vertical-align:top;padding-top:-2px;}
+	.ext-el-mask-msg {
+		background-color:#D7D7D7;
+		background-image:none !important;
+		border-color:#8F8F8F;
+		padding:0px;
+	}
+	.x-mask-loading div {
+		background:#FBFBFB url({!URLFOR($Resource.mj_orgchart__images,'/images/loader2.gif')}) no-repeat scroll center 15px !important;
+	}
+	.ext-el-mask-msg div {
+		font-size:20px;
+		height:40px;
+		padding-left:60px;
+		padding-right:60px;
+		padding-top:40px;
+	}
+	</style>
+	<apex:stylesheet value="{!URLFOR($Resource.mj_orgchart__ExtJs,'/resources/css/ext-all.css')}"/>
+	<apex:stylesheet value="{!URLFOR($Resource.mj_orgchart__ExtJs,'/resources/css/xtheme-gray-extend.css')}"/>
+	<script src="{!URLFOR($Resource.mj_orgchart__ExtJs, '/adapter/ext/ext-base-debug.js')}"></script>
+	<script src="{!URLFOR($Resource.mj_orgchart__ExtJs, '/ext-all-debug.js')}"></script>
+	<script>
+
+	</script>
+	<apex:pageblock title="Mindjet Control Panel" id="mainBlock">
+	    <apex:form id="form">
+	    	<apex:actionStatus id="statSave" onstart="Ext.Msg.wait('Saving','Please Wait');" onstop="Ext.Msg.hide();"></apex:actionStatus>
+			<apex:actionStatus id="statUpdate" onstart="Ext.Msg.wait('Updating','Please Wait');" onstop="Ext.Msg.hide();"></apex:actionStatus>
+			
+			
+	    	<!-- Action Functions area -->
+			<apex:actionFunction action="{!ChangeFavorFieldValueSelected}" name="ChangeFavorFieldValueSelected" rerender="FavorsBlock" status="statUpdate" immediate="true">
+				<apex:param name="SelectedFavorValue" value="" />
+			</apex:actionFunction>
+			<apex:actionFunction action="{!ChangeFavorFieldIconsCoupling}" name="ChangeFavorFieldIconsCoupling" rerender="FavorsBlock" status="statUpdate" immediate="true">
+				<apex:param name="SelectedFavorIcon" value="" />
+			</apex:actionFunction>
+			<apex:actionFunction action="{!ChangeTreeLayout}" name="ChangeTreeLayout" rerender="LayoutBlock" status="statUpdate" immediate="true">
+				<apex:param name="SelectedLayout" value="" />
+			</apex:actionFunction>			
+			<apex:actionFunction action="{!void}" name="voidCall1" rerender="PageBlock" status="statUpdate"></apex:actionFunction>
+	    	<!-- End of Action Functions area -->
+	    	
+			<apex:outputPanel rendered="{!NOT(isLoadComplete)}">
+				<apex:actionPoller action="{!onRepost}" rerender="form" interval="5" onsubmit="Ext.Msg.wait('Loading Initial Configuration','Please Wait');" oncomplete="Ext.Msg.hide();"></apex:actionPoller>
+				Loading Initial Configuration, please wait...
+			</apex:outputPanel>
+			<apex:outputPanel id="PageBlock" rendered="{!isLoadComplete}">
+		      	<apex:pageBlockSection title="Favors" columns="1" collapsible="false" id="FavorsBlock">
+			      	<apex:panelGrid columns="4" style="display:inline; float:left;" cellpadding="0">
+			      		<apex:pageBlockSection title="Favor Field" columns="1" collapsible="false">
+						<apex:selectList value="{!FavorSelectedField}" multiselect="false" size="1" onchange="voidCall1()">
+							<apex:selectOptions value="{!ContactPickListFieldsSelectOptions}"/>
+						</apex:selectList>
+			      		</apex:pageBlockSection>
+			      	 	<apex:pageBlockSection title="Favor Field Values" columns="1" collapsible="false">
+							<apex:dataTable value="{!FavorFieldValuesWithIcon}" var="field" rowClasses="odd,even" styleClass="tableClass">
+								<apex:column >
+									<apex:outputText value="{!field.first}"/>&nbsp;&nbsp;
+								</apex:column>
+								<apex:column width="30">
+									<input type="radio" value="{!field.second}" onclick="if(this.checked) ChangeFavorFieldValueSelected(this.value);" {!IF(field.second==CurrentlySelectedFavorFieldValue,'checked','')} name="FavorValueRadio"></input>&nbsp;
+								</apex:column>
+								<apex:column width="30">
+									<!-- Add prefix in deployment -->
+									<img src='/resource/{!ObjPrefix}MapMarkerIcons32x32png/{!field.third}' style="width:16px;height:16px;display:{!IF(field.third=='','none','block')}"/>								</apex:column>
+							</apex:dataTable>
+						</apex:pageBlockSection>
+						<apex:outputPanel style="display:block; float:left;">&nbsp;&nbsp;&nbsp;&nbsp;</apex:outputPanel>
+			      		<apex:pageBlockSection title="Available Icons" columns="1" collapsible="false">
+							<apex:dataTable value="{!ApplicationIcons}" var="ApplicationIconsRow" rowClasses="odd,even" styleClass="tableClass">
+							<apex:column >
+								<apex:repeat value="{!ApplicationIconsRow}" var="applicationIcon" id="theRepeat">
+									<!-- Add prefix in deployment -->
+									<img src='/resource/{!ObjPrefix}MapMarkerIcons32x32png/{!applicationIcon}' style="width:16px;height:16px;display:{!IF(applicationIcon!='' && !ISNULL(applicationIcon),'inline','none')}"/>									
+									<input type="radio" value="{!applicationIcon}" onclick="if(this.checked) ChangeFavorFieldIconsCoupling(this.value);" name="FavorIconRadio" style="margin-left:{!IF(applicationIcon!='' && !ISNULL(applicationIcon),'0px','20px')}" {!IF(applicationIcon=CurrentlySelectedFavorFieldValueIcon,'checked','')}></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</apex:repeat>
+							</apex:column>
+							</apex:dataTable>
+						</apex:pageBlockSection>
+					</apex:panelGrid>
+			 	</apex:pageBlockSection>
+		      	<apex:pageBlockSection title="Layout" columns="1" collapsible="false" id="LayoutBlock">
+			      	<apex:panelGrid columns="2" style="display:inline; float:left;" cellpadding="0">
+			      		<apex:outputPanel >
+			      			Use horizontal layout for:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			      		</apex:outputPanel>
+			      		<apex:outputPanel >
+			      			<apex:variable var="zero" value="0" />
+			      			<!-- Add prefix in deployment -->
+			      			<img src='/resource/{!ObjPrefix}images/images/sfdc-top-level.png' style="width:23px;height:12px;display:inline"/>									
+							<input type="radio" value="0" onclick="if(this.checked) ChangeTreeLayout(this.value);" name="LayourRadio0"  {!IF(TreeLayoutType=zero,'checked','')}></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Top Level<br>
+							<!-- Add prefix in deployment -->
+							<img src='/resource/{!ObjPrefix}images/images/sfdc-top-2-levels.png' style="width:23px;height:12px;display:inline"/>									
+							<input type="radio" value="1" onclick="if(this.checked) ChangeTreeLayout(this.value);" name="LayourRadio1" {!IF(TreeLayoutType!=zero,'checked','')}></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Top 2 Level<br><br>
+			      		</apex:outputPanel>
+					</apex:panelGrid>
+			 	</apex:pageBlockSection>			 	
+				<apex:commandButton value="Save" status="statUpdate" action="{!Save}" rerender="PageBlock"/>			 	
+			</apex:outputPanel>
+	  	</apex:form>
+	  </apex:pageblock>
+</apex:page>

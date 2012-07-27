@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <customSettingsVisibility>Protected</customSettingsVisibility>
+    <description>The Gittter App Configurations</description>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Associate_GitHub_Commits_to_Repositories__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Associate the GitHub Commit Events to GitHub Repositories</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Associate the GitHub Commit Events to GitHub Repositories</inlineHelpText>
+        <label>Associate GitHub Commits to Repositories</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Auto_Sync_GitHub_Comments__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Auto sync the creation of GitHub comments.</description>
+        <externalId>false</externalId>
+        <label>Auto Sync GitHub Comments</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Auto_Sync_GitHub_Issues__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Auto sync the creation of GitHub Issues</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto sync the creation of GitHub Issues</inlineHelpText>
+        <label>Auto Sync GitHub Issues</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Auto_Sync_GitHub_Repositories__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Auto sync the creation of GitHub repositories</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto sync the creation of GitHub repositories</inlineHelpText>
+        <label>Auto Sync GitHub Repositories</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Commit_Sync_Cron_Schedule__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Commit Sync Cron Schedule</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Commit_Sync_Job_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Commit Sync Job Id</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>GitHub_API_Token__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The GitHub API token used for secure integration authentication</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The GitHub API token used for secure integration authentication</inlineHelpText>
+        <label>GitHub API Token</label>
+        <length>150</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>GitHub_Atom_News_Feed_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The URL to the GitHub News Atom Feed</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The URL to the GitHub News Atom Feed</inlineHelpText>
+        <label>GitHub Atom News Feed URL</label>
+        <required>true</required>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>GitHub_Client_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The client Id provided to you by GitHub on application setup.</description>
+        <externalId>false</externalId>
+        <label>GitHub Client Id</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>GitHub_Client_Secret__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The client secret provided to you by GitHub on application setup.</description>
+        <externalId>false</externalId>
+        <label>GitHub Client Secret</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>GitHub_OAuth_Token__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The OAuth token returned by GitHub.</description>
+        <externalId>false</externalId>
+        <label>GitHub OAuth Token</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>GitHub_Repository_Account__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The account context for your GitHub repositories.</description>
+        <externalId>false</externalId>
+        <label>GitHub Repository Account</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Issue_Sync_Cron_Schedule__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The cron expression that will be used for Issue sync</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The rcon expression that will be used for Issue sync</inlineHelpText>
+        <label>Issue Sync Cron Schedule</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Issue_Sync_Job_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Issue Sync Job Id</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lookup_Users_By_GitHub_Username__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Lookup users by their GitHub username</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup users by their GitHub username</inlineHelpText>
+        <label>Lookup Users By GitHub Username</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Repository_Sync_Cron_Schedule__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The cron expression that will be used for the repository sync</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The cron expression that will be used for the repository sync</inlineHelpText>
+        <label>Repository Sync Cron Schedule</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Repository_Sync_Process_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Repository Sync Process Id</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Gittter Configuration</label>
+</CustomObject>

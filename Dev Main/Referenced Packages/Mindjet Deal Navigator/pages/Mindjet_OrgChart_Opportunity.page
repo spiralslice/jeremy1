@@ -1,0 +1,71 @@
+<apex:page standardController="Opportunity" extensions="mj_orgchart.Mindjet_OrgChart_Controller"  action="{!onload}" >
+<!-- 
+// Copyright 1994-2009 Mindjet LLC, San Francisco, CA USA. All rights reserved.
+//
+// This software is furnished under a license  and may be  used and  copied
+// only in  accordance of the  terms of such license and with the inclusion
+// of the above copyright note.   This software or any other copies thereof
+// may not be provided or otherwise made available to any other person.  No
+// title to and ownership of the software is hereby transferred.
+//
+// The information in this software is subject to change without notice and
+// should not be construed as a commitment by Mindjet LLC.
+//
+ -->
+    <apex:stylesheet value="{!URLFOR($Resource.mj_orgchart__ExtJs,'/resources/css/ext-all.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.mj_orgchart__ExtJs,'/resources/css/xtheme-gray-extend.css')}"/>
+    <script src="{!URLFOR($Resource.ExtJs, '/adapter/ext/ext-base.js')}"></script>
+    <script src="{!URLFOR($Resource.ExtJs, '/ext-all.js')}"></script>
+    <script src="{!URLFOR($Resource.static, '/ejs_production.js')}"></script>
+    <apex:stylesheet value="{!URLFOR($Resource.mj_orgchart__static,'/dealnavigator.css')}"/>	
+
+    <script>
+        var CONFIG={};
+        CONFIG.objPrefix='{!ObjPrefix}';
+        CONFIG.staticURL='{!URLFOR($Resource.mj_orgchart__static,'/')}';
+    </script>
+    <apex:variable var="newUI" value="newSkinOn" rendered="{!$User.UIThemeDisplayed = 'Theme3'}">
+	    <!--<apex:stylesheet value="{!URLFOR($Resource.mj_aloha_css)}"/> -->
+	    <apex:stylesheet value="{!URLFOR($Resource.mj_orgchart__images,'/css/aloha.css')}"/> 
+    </apex:variable>
+    <apex:variable var="oldUI" value="oldSkinOn" rendered="{!$User.UIThemeDisplayed != 'Theme3'}">
+       <apex:stylesheet value="{!URLFOR($Resource.mj_orgchart__images,'/css/mj_oldtheme.css')}"/>
+    </apex:variable>
+    
+    <apex:pageMessages />
+    <div id="mmwctoolbar" style="width:100%;float:left;z-index:10000;" ></div>
+    <div id="mmwc" style="width:100%;height:600px;float:left;background-color:black" ></div>
+    <div id="rightPanel" style="float:left; width:0%; height:600px; display:inline; overflow:auto;" ></div>
+    
+    <script id="mmwAPIScript" src="{!URLFOR($Resource.MindjetAPI9, '/mindjet/scripts/ext/api.js')}"></script>
+    
+    <apex:form id="form">
+        <apex:actionStatus />
+        <apex:actionFunction name="requestHandlerProxy"  action="{!requestHandler}" rerender="form" oncomplete="responseHandlerProxy()"/>
+        <apex:inputHidden value="{!response}" id="response"/>
+        <apex:inputHidden value="{!responseValue}" id="responseValue"/>
+        <apex:inputHidden value="{!request}" id="request"/>
+        <apex:inputHidden value="{!requestValue}" id="requestValue"/>
+        <script type="text/javascript">
+        	Ext.BLANK_IMAGE_URL="{!URLFOR($Resource.ExtJs,'/resources/images/s.gif')}";
+        	CONFIG.UITheme='{!$User.UIThemeDisplayed}'; 
+            CONFIG.loaderURL='{!URLFOR($Resource.images,"/images/loader.gif")}';
+            CONFIG.blankMapURL='{!URLFOR($Resource.MindjetAPI9, "/mindjet/blankmap.xml")}';
+            CONFIG.baseURLForEdit='{!URLFOR('/{Id}/e',null,[retURL=URLFOR($Page.Mindjet_OrgChartFormContainer,null,[op="edit"],false)],false)}';
+            CONFIG.baseURLForNew='{!URLFOR('/' + ContactKeyPrefix +'/e',null,[retURL=URLFOR($Page.Mindjet_OrgChartFormContainer,null,[op="new",res="cancel"],false),saveURL=URLFOR($Page.Mindjet_OrgChartFormContainer,null,[op="new",res="saved"],false)],false)}';
+            CONFIG.iResponse="{!$Component.response}";
+            CONFIG.iResponseValue="{!$Component.responseValue}";
+            CONFIG.iRequest="{!$Component.request}";
+            CONFIG.iRequestValue="{!$Component.requestValue}";
+            CONFIG.objectType="Opportunity";
+            CONFIG.baseURLforMapMarkersIcons="{!URLFOR($Resource.MapMarkerIcons32x32png)}/";
+        </script>
+    </apex:form>
+
+
+    <script type="text/javascript" >
+
+    </script>
+    <script src="{!URLFOR($Resource.static, '/orgchart.js')}" type="text/javascript" ></script>
+
+</apex:page>

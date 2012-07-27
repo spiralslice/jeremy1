@@ -1,0 +1,25 @@
+<apex:page title="Clipboard Test" >
+<apex:messages />
+	<script language="JavaScript">
+		function ClipBoard(copytextid, holdtextid) 
+		{
+			holdtxt = document.getElementById(holdtextid);
+			holdtxt.innerText = document.getElementById(copytextid).innerText;
+			Copied = holdtxt.createTextRange();
+			alert("text in buffer \"" + holdtxt.innerText + "\"");
+			Copied.execCommand("Copy");
+		}
+	</script>	
+			
+	<apex:pageblock >
+	<apex:form >
+		<apex:outputpanel ID="copytext" STYLE="height:150;width:162;background-color:pink">
+			Text to Copy
+		</apex:outputpanel> 
+		<apex:inputtextarea ID="holdtext" STYLE="display:none;"/>
+		
+		<apex:commandbutton onClick="ClipBoard('{!$Component.copytext}', '{!$Component.holdtext}')" value="Copy to Clipboard"/> 
+	</apex:form>
+	</apex:pageblock>
+	
+</apex:page>

@@ -1,0 +1,36 @@
+<apex:page title="Unsubscribe From All Email" showheader="false" controller="UnSubCon">
+<apex:messages />
+<apex:form >
+
+	<table width="920" border="0" cellpadding="0" cellspacing="0" style="margin:auto;">
+		<tr><td width="201" valign="top" id="leftpanel"><p></p></td>
+		<td width="719" valign="top" id="midpanel">
+			<div id="midcontent" style="min-height: 400px;">
+				<h1>Unsubscribe</h1>
+				
+				<apex:outputpanel id="foundaddress" rendered="{!!isblank(EmailAddress)}">
+					<p>We're sorry you wish to unsubscribe {!EmailAddress} from all future correspondence from HOPE Foundation.</p>
+					<p>&nbsp;</p>
+					<p>Please tell us why you wish to unsubscribe so we may better suit educators in the future.</p>
+					<p>&nbsp;</p>		
+					<p><apex:inputtextarea cols="70" rows="5" style="color:#666;" value="{!Comments}"/></p>
+					<p>&nbsp;</p>
+					   <p><apex:commandbutton action="{!UnsubscribeEmail}" value="Unsubscribe!"/></p>
+					<p>&nbsp;</p>
+				</apex:outputpanel>
+				
+				<apex:outputpanel id="noaddress" rendered="{!isblank(EmailAddress)}">
+					<div width="920">
+						<p>The email address is invalid. For further assistance, please contact 
+						<a href="mailto:leadership@hopefoundation.org">leadership@hopefoundation.org</a>.</p>
+					</div>
+				</apex:outputpanel>
+	
+			</div><!-- midcontent end -->
+		</td></tr>
+	</table>							
+
+</apex:form>
+
+
+</apex:page>

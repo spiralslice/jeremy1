@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <webLinks>
+        <fullName>Mindjet_Deal_Navigator</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Mindjet Deal Navigator</masterLabel>
+        <openType>replace</openType>
+        <page>Mindjet_OrgChart</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Mindjet_Org_Chart</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Mindjet Deal Navigator</masterLabel>
+        <openType>replace</openType>
+        <page>Mindjet_OrgChart</page>
+        <protected>false</protected>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,14 @@
+<apex:page controller="OrgChartCon" >
+<apex:messages />
+<apex:pageblock >
+	<!--<apex:outputtext value="{!ContactHierarchy}"/>-->
+	<apex:outputlink value="/{!acct.id}">Back to {!acct.Name}</apex:outputlink>
+</apex:pageblock>
+<html>
+<body>  
+	<c:HierarchicalChart jsondata="{!ContactHierarchy}" 
+       					 size="large" color="#edf7ff" selectionColor="#d6e9f8" 
+       					 allowHTML="true"/>
+</body>
+</html>
+</apex:page>

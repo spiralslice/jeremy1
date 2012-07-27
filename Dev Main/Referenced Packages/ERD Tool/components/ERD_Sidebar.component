@@ -1,0 +1,185 @@
+<apex:component >
+     
+    <apex:attribute name="sidebar" type="ERD.ERD_Sidebar" 
+        description="ERD_Sidebar Class" required="true" />
+    
+    <apex:outputPanel id="sidebarJS" >
+        <script type="text/javascript">
+            function setupSidebarObjectFields(){
+
+                var sidebarObjectFieldDiv = document.getElementById("{!sidebar.SelectedObject.Name}_SBFields");
+                var sidebarObjectLink = document.getElementById("{!sidebar.SelectedObject.Name}_SBLink");
+                var sidebarObjectLinkToHide = document.getElementById("{!sidebar.SelectedObject.Name}_linkToHide");
+                
+                sidebarObjectLinkToHide.style.display = "none";
+                sidebarObjectLink.style.display = "block";
+                
+                var sidebarObjectFields = "";
+                
+                <apex:repeat value="{!sidebar.SelectedObject.fieldLabels}" var="fieldLabel">
+                    sidebarObjectFields += '<div class="SidebarFields">{!fieldLabel}</div>'
+                </apex:repeat>
+
+                sidebarObjectFieldDiv.innerHTML = sidebarObjectFields;
+                sidebarObjectFieldDiv.style.display = "block";
+            
+            }
+            function showHideSidebarObjectFields(objectName){
+            
+                var sidebarObjectFieldDiv = document.getElementById(objectName+"_SBFields");
+                var sidebarObjectImage = document.getElementById(objectName+"_SBImage");
+                if(sidebarObjectFieldDiv.style.display == "block"){
+                    sidebarObjectFieldDiv.style.display = "none";
+                    sidebarObjectImage.src = "{!URLFOR($Resource.ERD__ERD_Resources,'images/rightArrow.gif')}";
+                }
+                else{
+                    sidebarObjectFieldDiv.style.display = "block";
+                    sidebarObjectImage.src = "{!URLFOR($Resource.ERD__ERD_Resources,'images/downArrow.gif')}";
+                }
+            
+            }
+            
+            function disableCheckbox(objectName){
+                
+                var sidebarObjectHideCheckboxHideDiv = document.getElementById(objectName+"_HideCheckboxDiv");
+                var sidebarObjectShowCheckboxShowDiv = document.getElementById(objectName+"_ShowCheckboxDiv");
+                var sidebarObjectCheckbox = document.getElementById(objectName+"_Checkbox");
+
+                // hide Hidecheckbox
+                sidebarObjectHideCheckboxHideDiv.style.display = "none";
+                // show checkbox
+                sidebarObjectShowCheckboxShowDiv.style.display = "block";
+                
+                sidebarObjectCheckbox.checked = "true";
+                
+                // Disable all checkoxes 
+                var inputs = document.getElementsByTagName('input');
+
+                for(var i=0; i<inputs.length; i++){
+                    if(inputs[i].getAttribute('type')=='checkbox'){
+                        inputs[i].disabled = true;
+                    }
+                }
+                
+                
+            }
+            
+        </script>
+    </apex:outputPanel> 
+        
+    <!-- Standard Objects List -->
+    <div id="sidebar"> 
+        <br/>
+        <div style="float:left;">
+            <h3>Standard Objects</h3>
+        </div>
+        <div style="float:right; padding-top:15px;">
+            show/hide
+        </div>
+        <div class="clear"></div>
+        
+        <apex:outputPanel id="sidebarRerender">
+        
+            <apex:repeat value="{!sidebar.sidebarObjects}" var="obj">
+                
+                <apex:outputPanel rendered="{!!obj.isCustom}"> 
+                    
+                    <div style="padding-bottom:5px;">
+                        
+                        <!-- Object Fields Show/Hide *Start* -->
+                        <div id="{!obj.name}_linkToHide" style="float:left; margin-right:5px;">
+                            <apex:commandlink action="{!obj.showFields}" oncomplete="setupSidebarObjectFields()" rerender="sidebarJS" status="actionStatus" >  
+                                <apex:image url="{!URLFOR($Resource.ERD__ERD_Resources,'images/rightArrow.gif')}" />
+                            </apex:commandlink>
+                        </div>
+                        <div id="{!obj.name}_SBLink" style="float:left; display:none; margin-right:5px;">
+                            <a onclick="showHideSidebarObjectFields('{!obj.name}')" style="cursor:pointer;">
+                                <img id="{!obj.name}_SBImage" src="{!URLFOR($Resource.ERD_Resources,'images/downArrow.gif')}" />
+                            </a>
+                        </div>   
+                        <!-- Object Fields Show/Hide *End* -->
+                        
+                        <b>{!obj.label}</b>
+                     
+                        <!-- Show/Hide Object on Diagram Checkbox *Start*--> 
+                        <!-- only show if object relationships are not all gained -->
+                        <div id="{!obj.Name}_HideCheckboxDiv" style="float:right;" >
+                            <apex:inputCheckbox value="{!obj.showObject}" >         
+                                <apex:actionSupport event="onchange" action="{!obj.showObject}" onsubmit="disableCheckbox('{!obj.name}')" oncomplete="addObjectToDiagram('{!obj.name}','{!obj.label}')" rerender="diagramJS" status="actionStatus">     
+                                </apex:actionSupport>
+                            </apex:inputCheckbox>
+                        </div> 
+                        <!-- only show if object relationships are all gained -->
+                        <div id="{!obj.Name}_ShowCheckboxDiv" style="float:right; display:none;" >
+                            <input id="{!obj.Name}_Checkbox" type="checkbox" value="{!obj.showObject}" onchange="showObjectHandeler('{!obj.name}', this.checked)" ></input> 
+                        </div>
+                        <!-- Show/Hide Object on Diagram Checkbox *End*-->     
+                         
+                    </div>  
+                    
+                    <!-- Object Fields -->
+                    <div id="{!obj.Name}_SBFields" style="display:none;"></div>
+                
+                </apex:outputPanel>
+                
+            </apex:repeat>
+            
+            <!-- Custom Objects List -->
+            <br/>
+            <div style="float:left;">
+                <h3>Custom Objects</h3>
+            </div>
+            <div style="float:right; padding-top:15px;">
+                show/hide
+            </div>
+           <div class="clear"></div>
+           
+            <apex:repeat value="{!sidebar.sidebarObjects}" var="obj">
+                
+                <apex:outputPanel rendered="{!obj.isCustom}"> 
+                    
+                    <div style="padding-bottom:5px;">
+                        
+                        <!-- Object Fields Show/Hide *Start* -->
+                        <div id="{!obj.name}_linkToHide" style="float:left; margin-right:5px;">
+                            <apex:commandlink action="{!obj.showFields}" oncomplete="setupSidebarObjectFields()" rerender="sidebarJS" status="actionStatus" >  
+                                <apex:image url="{!URLFOR($Resource.ERD__ERD_Resources,'images/rightArrow.gif')}" />
+                            </apex:commandlink>
+                        </div>
+                        <div id="{!obj.name}_SBLink" style="float:left; display:none; margin-right:5px;">
+                            <a onclick="showHideSidebarObjectFields('{!obj.name}')" style="cursor:pointer;">
+                                <img id="{!obj.name}_SBImage" src="{!URLFOR($Resource.ERD_Resources,'images/downArrow.gif')}" />
+                            </a>
+                        </div>   
+                        <!-- Object Fields Show/Hide *End* -->
+                        
+                        <b>{!obj.label}</b>
+                     
+                        <!-- Show/Hide Object on Diagram Checkbox *Start*--> 
+                        <!-- only show if object relationships are not all gained -->
+                        <div id="{!obj.Name}_HideCheckboxDiv" style="float:right;" >
+                            <apex:inputCheckbox value="{!obj.showObject}" >         
+                                <apex:actionSupport event="onchange" action="{!obj.showObject}" onsubmit="disableCheckbox('{!obj.name}')" oncomplete="addObjectToDiagram('{!obj.name}','{!obj.label}')" rerender="diagramJS" status="actionStatus">     
+                                </apex:actionSupport>
+                            </apex:inputCheckbox>
+                        </div> 
+                        <!-- only show if object relationships are all gained -->
+                        <div id="{!obj.Name}_ShowCheckboxDiv" style="float:right; display:none;" >
+                            <input id="{!obj.Name}_Checkbox" type="checkbox" value="{!obj.showObject}" onchange="showObjectHandeler('{!obj.name}', this.checked)" ></input> 
+                        </div>
+                        <!-- Show/Hide Object on Diagram Checkbox *End*-->     
+                         
+                    </div>  
+                    
+                    <!-- Object Fields -->
+                    <div id="{!obj.Name}_SBFields" style="display:none;"></div>
+                    
+                </apex:outputPanel>
+                
+            </apex:repeat>
+            <br/>
+        </apex:outputPanel>
+        
+    </div>
+    
+</apex:component>

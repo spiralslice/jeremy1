@@ -1,0 +1,119 @@
+<apex:page controller="rgh.GittterManagementController" action="{!token}">
+	<style type="text/css">
+		.error{ color: red }
+	</style>
+	<apex:form rendered="{!isEdit}">
+		<apex:pageBlock title="Edit Gittter Configurations">
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!save}" value="Save" />
+				<apex:commandButton action="{!cancel}" value="Cancel" />
+			</apex:pageBlockButtons>
+			<apex:messages styleClass="error" />
+			<apex:pageBlockSection title="Scheduling" columns="2">
+				<apex:pageBlockSectionItem >
+					<p>Enter cron expressions for the frequency of the jobs. Minutes and seconds must be whole numbers.</p>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+				<apex:inputField value="{!config.rgh__Repository_Sync_Cron_Schedule__c}" />
+				<apex:inputField value="{!config.rgh__Issue_Sync_Cron_Schedule__c}" />
+				<apex:inputField value="{!config.rgh__Commit_Sync_Cron_Schedule__c}" />
+			</apex:pageBlockSection>
+			<apex:pageBlockSection title="Synchronization" columns="2">
+				<apex:inputField value="{!config.rgh__Auto_Sync_GitHub_Repositories__c}" />
+				<apex:inputField value="{!config.rgh__Auto_Sync_GitHub_Issues__c}" />
+				<apex:inputField value="{!config.rgh__Auto_Sync_GitHub_Comments__c}" />
+			</apex:pageBlockSection>
+			<apex:pageBlockSection title="GitHub Credentials" columns="2">
+				<apex:inputField value="{!config.rgh__GitHub_Client_Id__c}" />
+				<apex:inputField value="{!config.rgh__GitHub_Client_Secret__c}" />
+				<apex:inputField value="{!config.rgh__GitHub_Repository_Account__c}" />
+				<apex:inputField value="{!config.rgh__GitHub_Atom_News_Feed_URL__c}" />
+				<apex:inputField value="{!config.rgh__Lookup_Users_By_GitHub_Username__c}" />
+				<apex:inputField value="{!config.rgh__GitHub_API_Token__c}" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+	<apex:pageBlock rendered="{!!isEdit}" title="Gittter Management">
+		<apex:pageBlockButtons >
+			<apex:form >
+				<apex:commandButton action="{!doEdit}" value="Edit Configuration" />
+			</apex:form>
+		</apex:pageBlockButtons>
+		<apex:messages styleClass="error" />
+		<apex:tabPanel selectedTab="{!selectedTab}">
+			<apex:tab label="View Configurations" name="configurationsTab">
+				<apex:pageBlockSection title="Scheduling" columns="2">
+					<apex:outputField value="{!config.rgh__Repository_Sync_Cron_Schedule__c}" />
+					<apex:outputField value="{!config.rgh__Issue_Sync_Cron_Schedule__c}" />
+					<apex:outputField value="{!config.rgh__Commit_Sync_Cron_Schedule__c}" />
+				</apex:pageBlockSection>
+				<apex:pageBlockSection title="Synchronization" columns="2">
+					<apex:outputField value="{!config.rgh__Auto_Sync_GitHub_Repositories__c}" />
+					<apex:outputField value="{!config.rgh__Auto_Sync_GitHub_Issues__c}" />
+					<apex:outputField value="{!config.rgh__Auto_Sync_GitHub_Comments__c}" />
+				</apex:pageBlockSection>
+				<apex:pageBlockSection title="GitHub Authentication" columns="1">
+					<apex:outputPanel id="gitHubLinkPanel">
+						<p>In order to provide Gittter with the proper credentials, please visit
+							<a href="https://github.com/login/oauth/authorize?client_id={!clientId}&redirect_uri={!redirectUrl}&scope=user,repo,gists">GitHub</a>
+							and sign in using your GitHub administrator credentials. When you are finished, you will be sent
+							back here.
+						</p>
+					</apex:outputPanel>
+				</apex:pageBlockSection>
+				<apex:pageBlockSection title="GitHub Credentials" columns="2">
+					<apex:outputField value="{!config.rgh__GitHub_Client_Id__c}" />
+					<apex:outputField value="{!config.rgh__GitHub_Client_Secret__c}" />
+					<apex:outputField value="{!config.rgh__GitHub_OAuth_Token__c}" />
+					<apex:outputField value="{!config.rgh__GitHub_Repository_Account__c}" />
+					<apex:outputField value="{!config.rgh__GitHub_Atom_News_Feed_URL__c}" />
+					<apex:outputField value="{!config.rgh__Lookup_Users_By_GitHub_Username__c}" />
+					<apex:outputField value="{!config.rgh__GitHub_API_Token__c}" />
+				</apex:pageBlockSection>
+			</apex:tab>
+			<apex:tab label="Manage Synchronization Processes" name="processesTab">
+				<apex:form >
+					<apex:pageBlockSection title="Repository Sync Job" columns="2">
+						<apex:outputField value="{!repositoryJob.State}" rendered="{!repositoryJob.Id != null}" />
+						<apex:outputField value="{!repositoryJob.StartTime}" rendered="{!repositoryJob.Id != null}" />
+						<apex:outputField value="{!repositoryJob.EndTime}" rendered="{!repositoryJob.Id != null}" />
+						<apex:outputField value="{!repositoryJob.PreviousFireTime}" rendered="{!repositoryJob.Id != null}" />
+						<apex:outputField value="{!repositoryJob.NextFireTime}" rendered="{!repositoryJob.Id != null}" />
+						<apex:outputField value="{!repositoryJob.TimesTriggered}" rendered="{!repositoryJob.Id != null}" />
+						<apex:outputField value="{!repositoryJob.CronExpression}" rendered="{!repositoryJob.Id != null}" />
+					</apex:pageBlockSection>
+					<apex:outputPanel style="width: 200px; margin: 0 auto;" layout="block">
+						<apex:commandButton action="{!startRepositoryJob}" value="Start Job" rendered="{!repositoryJob.Id == null}" />
+						<apex:commandButton action="{!stopRepositoryJob}" value="Stop Job" rendered="{!repositoryJob.Id != null}" />
+					</apex:outputPanel>
+					<apex:pageBlockSection title="Issue Sync Job" columns="2">
+						<apex:outputField value="{!issueJob.State}" rendered="{!issueJob.Id != null}" />
+						<apex:outputField value="{!issueJob.StartTime}" rendered="{!issueJob.Id != null}" />
+						<apex:outputField value="{!issueJob.EndTime}" rendered="{!issueJob.Id != null}" />
+						<apex:outputField value="{!issueJob.PreviousFireTime}" rendered="{!issueJob.Id != null}" />
+						<apex:outputField value="{!issueJob.NextFireTime}" rendered="{!issueJob.Id != null}" />
+						<apex:outputField value="{!issueJob.TimesTriggered}" rendered="{!issueJob.Id != null}" />
+						<apex:outputField value="{!issueJob.CronExpression}" rendered="{!issueJob.Id != null}" />
+					</apex:pageBlockSection>
+					<apex:outputPanel style="width: 200px; margin: 0 auto;" layout="block">
+						<apex:commandButton action="{!startIssueJob}" value="Start Job" rendered="{!issueJob.Id == null}" />
+						<apex:commandButton action="{!stopIssueJob}" value="Stop Job" rendered="{!issueJob.Id != null}" />
+					</apex:outputPanel>
+					<apex:pageBlockSection title="Commit Sync Job" columns="2">
+						<apex:outputField value="{!commitJob.State}" rendered="{!commitJob.Id != null}" />
+						<apex:outputField value="{!commitJob.StartTime}" rendered="{!commitJob.Id != null}" />
+						<apex:outputField value="{!commitJob.EndTime}" rendered="{!commitJob.Id != null}" />
+						<apex:outputField value="{!commitJob.PreviousFireTime}" rendered="{!commitJob.Id != null}" />
+						<apex:outputField value="{!commitJob.NextFireTime}" rendered="{!commitJob.Id != null}" />
+						<apex:outputField value="{!commitJob.TimesTriggered}" rendered="{!commitJob.Id != null}" />
+						<apex:outputField value="{!commitJob.CronExpression}" rendered="{!commitJob.Id != null}" />
+					</apex:pageBlockSection>
+					<apex:outputPanel style="width: 200px; margin: 0 auto;" layout="block">
+						<apex:commandButton action="{!startCommitJob}" value="Start Job" rendered="{!commitJob.Id == null}" />
+						<apex:commandButton action="{!stopCommitJob}" value="Stop Job" rendered="{!commitJob.Id != null}" />
+					</apex:outputPanel>
+				</apex:form>
+			</apex:tab>
+		</apex:tabPanel>
+	</apex:pageBlock>
+</apex:page>

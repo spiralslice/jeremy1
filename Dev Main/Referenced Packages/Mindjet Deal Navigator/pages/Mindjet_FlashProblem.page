@@ -1,0 +1,10 @@
+<apex:page >
+<body>
+<div style="font-size:22px; font-weight:bold; text-align:center; padding-top:30px;">
+   Sorry,<br/>This application requires the latest version of the Flash player.
+</div>
+<div style="font-size:12px; font-weight:bold; text-align:center; padding-top:30px;">
+   The download is small and the installation is quick.<br/>
+   <a href="http://www.adobe.com/go/getflashplayer">Get it here</a>
+</div>
+</apex:page>

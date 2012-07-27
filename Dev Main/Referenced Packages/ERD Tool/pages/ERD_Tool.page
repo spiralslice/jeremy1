@@ -1,0 +1,231 @@
+<apex:page showHeader="false" sidebar="false" cache="false" controller="ERD.ERD_Tool" >
+
+    <!-- Add StyleSheet -->
+    <apex:stylesheet value="{!URLFOR($Resource.ERD__ERD_Resources, 'StyleSheet.css')}"/> 
+    <!-- Google Import for canvas to work with IE -->
+    <script type="text/javascript" src="{!URLFOR($Resource.ERD_Resources,'javascript/excanvas.txt')}"></script>
+    <!-- jQuery Imports -->
+    <script type="text/javascript" src="{!URLFOR($Resource.ERD_Resources,'javascript/jquery_002.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.ERD_Resources,'javascript/jquery-ui.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.ERD_Resources,'javascript/jquery.js')}"></script>
+    
+    <script type="text/javascript">
+        var xCoord = 50;
+        var yCoord = 250;
+    </script> 
+    
+    <apex:outputPanel id="diagramJS" > 
+        <script type="text/javascript"> 
+            
+            function setupDiagram(){
+                jsPlumb.reset();
+                
+                // chrome fix.
+                document.onselectstart = function () { return false; };
+                
+                
+                
+                var exampleDropOptions = {
+                    tolerance:'touch',
+                    hoverClass:'dropHover',
+                    activeClass:'dragActive'
+                };
+                
+
+                jsPlumb.Defaults.DragOptions = { cursor: 'move', zIndex:2000 };
+                
+                var _makeOverlay = function() { 
+                    return new jsPlumb.Overlays.Label({
+                        labelStyle : {
+                            font : "15px sans-serif",                       
+                            color : "black"                                                         
+                        },
+                        label : "many", 
+                        location:0.9
+                    });                                                 
+                };
+                    
+                jsPlumb.draggable($(".window"));
+            
+                
+                <apex:repeat value="{!diagram.relatedObjects}" var="stringRelatonships">
+                    
+                    var stringRelatonships = '{!stringRelatonships}';
+                    var relationship = stringRelatonships.split(",");
+                    
+                    var relatedParent = document.getElementById(relationship[0]);   
+                    var relatedChild = document.getElementById(relationship[1]);
+                    
+                    if(relatedParent != null && relatedChild !=null){
+                        if(relatedParent.style.display == 'block' && relatedChild.style.display == 'block'){
+                            
+                            // check if master detail
+                            if(relationship[2] == "true"){
+                                var exampleEndpoint = {
+                                    endpoint:new jsPlumb.Endpoints.Rectangle(),
+                                    style:{ width:5, height:5, fillStyle:'EB5757' },
+                                    connectorStyle : {
+                                        lineWidth:4,
+                                        strokeStyle:'#EB5757'
+                                    }
+                                };
+                            }
+                            else{
+                                var exampleEndpoint = {
+                                    endpoint:new jsPlumb.Endpoints.Rectangle(),
+                                    style:{ width:5, height:5, fillStyle:'#3076B4' },
+                                    connectorStyle : {
+                                        lineWidth:4,
+                                        strokeStyle:'#3076B4'
+                                    }
+                                };
+                            }
+                            
+                            var anchors = [jsPlumb.makeAnchor(0.2, 0, 0, -1), jsPlumb.makeAnchor(1, 0.2, 1, 0), jsPlumb.makeAnchor(0.8, 1, 0, 1), jsPlumb.makeAnchor(0, 0.8, -1, 0) ];
+                            var commonConfig = { 
+                                anchors:anchors, 
+                                endpoint:exampleEndpoint,
+                                connector:new jsPlumb.Connectors.Straight() 
+                                
+                            };
+                            jsPlumb.autoConnect(jsPlumb.extend(commonConfig, {source:relationship[0], target:relationship[1], overlays:[_makeOverlay()], anchors:[jsPlumb.makeAnchor(0.2, 0, 0, -1), jsPlumb.makeAnchor(1, 0.2, 1, 0), jsPlumb.makeAnchor(0.8, 1, 0, 1), jsPlumb.makeAnchor(0, 0.8, -1, 0) ]}));    
+                        }
+                    }
+                    
+                </apex:repeat>
+                
+            }
+            
+            function addObjectToDiagram(){
+                
+                var fieldNames = "";
+                var fieldTypes = "";
+                var objectName = "{!diagram.selectedObject.name}";
+                var objectLabel = "{!diagram.selectedObject.label}";
+                
+                <apex:repeat value="{!diagram.SelectedObject.fieldLabels}" var="fieldLabel">
+                    fieldNames += "{!fieldLabel}<br/>"
+                </apex:repeat>
+                
+                <apex:repeat value="{!diagram.SelectedObject.fieldTypes}" var="field">
+                    fieldTypes += "{!field}<br/>"
+                </apex:repeat>
+                
+                // add HTML for object to diagram
+                var diagramDiv = document.getElementById("diagram");
+                diagramDiv.innerHTML += '<div class="window ui-draggable" id="'+ objectName.toLowerCase() +'" style="top:'+xCoord+'px;left:'+yCoord+'px; display:block; cursor:move;" ><div class="entity"><div style="float:left; margin-right:5px;"><b>'+objectLabel+'</b></div><div style="float:right;"><a style="cursor: pointer;" onclick="showfields(\''+objectName+'_dgFields\')" >[+]</a></div><div class="clear"></div></div><div class="entity-fields"><div id="'+objectName+'_dgFields" style="display:none;"><div style="float:left; margin-right:5px;">'+fieldNames+'</div><div style="float:right; text-align:right; color:#56D75E;">'+fieldTypes+'</div><div class="clear"/></div></div></div>';
+                //increment coordinates for next object
+                if(yCoord == 870){
+                    xCoord += 155;
+                    yCoord = 250;
+                }
+                else{
+                    yCoord += 155;
+                }
+                    
+                // add related object links
+                setupDiagram();
+                
+                // Enable all checkoxes 
+                var inputs = document.getElementsByTagName('input');
+
+                for(var i=0; i<inputs.length; i++){
+                    if(inputs[i].getAttribute('type')=='checkbox'){
+                        inputs[i].disabled = false;
+                    }
+                }
+
+            }
+            
+            function showfields(fieldsDivId){
+                var Area = document.getElementById(fieldsDivId);
+                if(Area.style.display == "none")
+                {
+                    Area.style.display = "block";
+                }
+                else
+                {
+                    Area.style.display = "none";
+                } 
+                setupDiagram();
+            }
+            
+            function showObjectHandeler(objId, toShow){  
+                elem = document.getElementById(objId.toLowerCase());  
+                if(toShow == false){
+                    elem.style.display = "none";  
+                }
+                else
+                {
+                    elem.style.display = "block";
+                }
+                setupDiagram();
+            }
+            
+            
+            function showHideSidebar(AreaId){
+                var Area = document.getElementById(AreaId);
+                var btn1 = document.getElementById('sidebar-btn');
+                var btn2 = document.getElementById('sidebar-btn2');
+                if(Area.style.display == "none"){
+                    Area.style.display = "block";
+                    btn1.style.display = "none"; 
+                    btn2.style.display = "block";
+                }
+                else{ 
+                    Area.style.display = "none"; 
+                    btn2.style.display = "none";
+                    btn1.style.display = "block";
+                }  
+            }
+            
+        </script> 
+    </apex:outputPanel>
+    <div id="page">
+        <apex:form id="test" >
+            
+            <div id="page-banner">
+                
+                <c:ERD_Sidebar sidebar="{!sidebar}"/>
+    
+                <!-- Sidebar Button -->
+                <div>
+                    <a id="sidebar-btn" onclick="showHideSidebar('sidebar')" />
+                    <a id="sidebar-btn2" onclick="showHideSidebar('sidebar')" />
+                </div>
+                
+                <div class="banner-image">
+                    
+                    <!-- Close Button -->
+                    <apex:commandLink action="{!close}" >
+                        <apex:image styleClass="page-close" url="{!URLFOR($Resource.ERD__ERD_Resources,'images/close.png')}" />
+                    </apex:commandLink>
+                    
+                    <!-- Action Status -->
+                    <div style="padding:8px;">
+                        <apex:actionStatus startText="Please Wait..."
+                            stopText="" id="actionStatus" style="margin:8px;"  />
+                    </div>
+                    
+                    <div class="clear"></div>
+                    
+                </div>
+                
+                <div class="clear"></div>
+                
+            </div>
+            
+            <div id="diagram"></div>
+         
+        </apex:form>   
+    </div>
+    <div id="footer-outer">
+        <div id="footer-inner">
+            <a href="http://www.petergascoyne.co.uk/" target="_blank" >Peter Gascoyne</a>
+            &amp;
+            <a href="http://www.xactium.com/" target="_blank" >Xactium</a>
+            &copy; 2011
+        </div>
+    </div>
+    
+</apex:page>

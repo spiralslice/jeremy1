@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ERD Tool</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <namespacePrefix>ERD</namespacePrefix>
+    <types>
+        <members>ERD_Diagram</members>
+        <members>ERD_Object</members>
+        <members>ERD_SelectObjects</members>
+        <members>ERD_Sidebar</members>
+        <members>ERD_Tool</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>ERD_Sidebar</members>
+        <name>ApexComponent</name>
+    </types>
+    <types>
+        <members>ERD_SelectObjects</members>
+        <members>ERD_Tool</members>
+        <members>ERD_UserGuide</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>ERD_Tool</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>ERD_Tool_Object__c.Label__c</members>
+        <members>ERD_Tool_Object__c.Type__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>ERD_Tool_Object__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>ERD_Tool_Beta</members>
+        <members>ERD_Tool_Objects</members>
+        <members>ERD_Tool_User_Guide</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>ERD_DocumentFolder</members>
+        <members>ERD_DocumentFolder/ERD_Tool_Logo.gif</members>
+        <name>Document</name>
+    </types>
+    <types>
+        <members>ERD_Tool_Object__c-ERD Tool Object Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>ERD_Resources</members>
+        <name>StaticResource</name>
+    </types>
+    <version>23.0</version>
+</Package>

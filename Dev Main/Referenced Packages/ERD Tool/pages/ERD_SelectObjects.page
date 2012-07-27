@@ -1,0 +1,48 @@
+<apex:page controller="ERD.ERD_SelectObjects">
+    
+    <apex:form >
+        
+        <apex:pageBlock title="ERD Tool: Enable Objects" >
+        
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save"/>
+            </apex:pageBlockButtons>
+            
+            <apex:outputPanel id="lists" >
+
+                <p>
+                    Move objects to "Enabled Objects" to be available in the ERD Tool.
+                </p>
+                
+                <div style="float:left; margin:10px;" >
+                    Available Objects<br/>
+                    <apex:selectList value="{!selectedAvailableObjects}" multiselect="true" size="20" style="min-width:200px;">
+                        <apex:selectOptions value="{!availableObjects}" />
+                    </apex:selectList>
+                </div>
+                
+                <div style="float:left; padding-top:100px;">
+                    
+                    <apex:commandButton action="{!add}" value="Add >" reRender="lists" style="width:80px; margin:5px;" />
+                    <br/>
+                    <apex:commandButton action="{!remove}" value="< Remove" reRender="lists" style="width:80px; margin:5px;"/>
+                
+                </div>
+                
+                <div style="float:left; margin:10px;" >
+                    Enabled Objects<br/>
+                    <apex:selectList value="{!selectedEnabledObjects}" multiselect="true" size="20" style="min-width:200px;">
+                        <apex:selectOptions value="{!enabledObjects}" />
+                    </apex:selectList>
+                
+                </div>
+                
+                <div style="clear:both;"></div>
+            
+            </apex:outputPanel>
+            
+        </apex:pageBlock>
+        
+    </apex:form> 
+    
+</apex:page>

@@ -1,0 +1,13 @@
+<apex:page >
+
+<apex:pageblock mode="maindetail" >
+	<apex:pageblocktable value="{!null}" var="a">
+		<apex:column ></apex:column>
+		<apex:column ></apex:column>
+		<apex:column ></apex:column>
+		<apex:column ></apex:column>
+		<apex:column ></apex:column>
+	</apex:pageblocktable>
+</apex:pageblock>
+
+</apex:page>

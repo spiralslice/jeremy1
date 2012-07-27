@@ -1,0 +1,25 @@
+<apex:page showHeader="false">
+<!-- 
+// Copyright 1994-2009 Mindjet LLC, San Francisco, CA USA. All rights reserved.
+//
+// This software is furnished under a license  and may be  used and  copied
+// only in  accordance of the  terms of such license and with the inclusion
+// of the above copyright note.   This software or any other copies thereof
+// may not be provided or otherwise made available to any other person.  No
+// title to and ownership of the software is hereby transferred.
+//
+// The information in this software is subject to change without notice and
+// should not be construed as a commitment by Mindjet LLC.
+//
+ -->
+    <script type="text/javascript">
+        var search=window.location.search.slice(1,window.location.search.length).split("&"),oSearch={};
+        for(var i=0;i<search.length;i++) oSearch[search[i].split("=")[0]]=search[i].split("=")[1];
+        try{
+        	window.top.mainController.handleWindowCallBack(oSearch);
+        } catch(e){
+        	window.parent.mainController.handleWindowCallBack(oSearch);
+        }
+        window.close();
+    </script>
+</apex:page>

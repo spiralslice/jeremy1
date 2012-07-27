@@ -1,0 +1,13 @@
+<apex:page title="mixed VF Contact page" standardcontroller="QuoteLineItem">
+<apex:messages />
+
+<apex:pageblock rendered="{!if(quotelineitem.Quantity = 1, true, false)}">
+	Quantity is 1, I think.
+</apex:pageblock>
+
+<apex:pageblock rendered="{!if(quotelineitem.Quantity = 2, true, false)}">
+	Quantity is 2, I think.
+</apex:pageblock>
+
+<apex:detail subject="{!quotelineitem.Id}"/>
+</apex:page>
